@@ -1,0 +1,33 @@
+/* pizza-ordering.component.css */
+.container {
+    margin: 20px;
+  }
+  
+  .pizza-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pizza-table th,
+  .pizza-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .pizza-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .pizza-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .pizza-table tr:hover {
+    background-color: #e2e2e2;
+  }
+  
+  .total-row {
+    background-color: #d1e7dd; /* Light green background color for the total row */
+    font-weight: bold;
+  }
