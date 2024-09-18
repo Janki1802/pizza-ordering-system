@@ -9,10 +9,10 @@ import { Topping } from '../models/pizza.model';
 export class PizzaService {
   // Pizza size and prices
   pizzaSizes = [
-    { name: 'Small', price: 5 },
-    { name: 'Medium', price: 7 },
-    { name: 'Large', price: 8 },
-    { name: 'ExtraLarge', price: 9 },
+    { name: 'Small', price: 5 , quantity: 1 },
+    { name: 'Medium', price: 7 , quantity: 1 },
+    { name: 'Large', price: 8 , quantity: 1 },
+    { name: 'ExtraLarge', price: 9 , quantity: 1 },
   ];
 
   // Veg and Non-Veg Toppings

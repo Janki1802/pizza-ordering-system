@@ -1,65 +1,87 @@
-<!-- pizza-ordering.component.html -->
 <div class="container">
-    <h2>Pizza Ordering System</h2>
-    <table class="pizza-table">
-      <thead>
-        <tr>
-          <th rowspan="2">Toppings</th>
-          <th [attr.colspan]="pizzaSizes.length">Pizza Size</th>
-        </tr>
-        <tr>
-          <th *ngFor="let size of pizzaSizes">{{ size.name }} (${{ size.price }})</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Veg Toppings -->
-        <tr>
-          <td><strong>Veg Toppings</strong></td>
-          <td *ngFor="let size of pizzaSizes"></td>
-        </tr>
-        <tr *ngFor="let topping of vegToppings">
-          <td>
-            {{ topping.name }} ({{ topping.price | currency }})
-          </td>
-          <td *ngFor="let size of pizzaSizes">
-            <input
-              type="checkbox"
-              [ngModel]="isSelected(topping, size.name)"
-              (ngModelChange)="setSelected(topping, size.name, $event)"
-            />
-          </td>
-        </tr>
-  
-        <!-- Non-Veg Toppings -->
-        <tr>
-          <td><strong>Non-Veg Toppings</strong></td>
-          <td *ngFor="let size of pizzaSizes"></td>
-        </tr>
-        <tr *ngFor="let topping of nonVegToppings">
-          <td>
-            {{ topping.name }} ({{ topping.price | currency }})
-          </td>
-          <td *ngFor="let size of pizzaSizes">
-            <input
-              type="checkbox"
-              [ngModel]="isSelected(topping, size.name)"
-              (ngModelChange)="setSelected(topping, size.name, $event)"
-            />
-          </td>
-        </tr>
-  
-        <!-- Total Row -->
-        <tr class="total-row">
-          <td><strong>Total</strong></td>
-          <td [attr.colspan]="pizzaSizes.length">{{ total | currency }}</td>
-        </tr>
-  
-        <!-- Offer Row -->
-        <tr>
-          <td><strong>Offer</strong></td>
-          <td [attr.colspan]="pizzaSizes.length">{{ offerMessage }}</td>          
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+  <h2>Pizza Ordering System</h2>
+  <table class="pizza-table">
+    <thead>
+      <tr>
+        <th rowspan="2">Toppings</th>
+        <th [attr.colspan]="pizzaSizes.length">Pizza Size</th>
+      </tr>
+      <tr>
+        <th *ngFor="let size of pizzaSizes">
+          {{ size.name }} (${{ size.price }})
+          <br>
+          <!-- Quantity Input for each size -->
+          <input type="number" [(ngModel)]="size.quantity" min="1" (ngModelChange)="updateTotal()" placeholder="Quantity" />
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Veg Toppings -->
+      <tr>
+        <td><strong>Veg Toppings</strong></td>
+        <td *ngFor="let size of pizzaSizes"></td>
+      </tr>
+      <tr *ngFor="let topping of vegToppings">
+        <td>
+          {{ topping.name }} ({{ topping.price | currency }})
+        </td>
+        <td *ngFor="let size of pizzaSizes">
+          <input
+            type="checkbox"
+            [ngModel]="isSelected(topping, size.name)"
+            (ngModelChange)="setSelected(topping, size.name, $event); updateTotal()"
+          />
+        </td>
+      </tr>
+
+      <!-- Non-Veg Toppings -->
+      <tr>
+        <td><strong>Non-Veg Toppings</strong></td>
+        <td *ngFor="let size of pizzaSizes"></td>
+      </tr>
+      <tr *ngFor="let topping of nonVegToppings">
+        <td>
+          {{ topping.name }} ({{ topping.price | currency }})
+        </td>
+        <td *ngFor="let size of pizzaSizes">
+          <input
+            type="checkbox"
+            [ngModel]="isSelected(topping, size.name)"
+            (ngModelChange)="setSelected(topping, size.name, $event); updateTotal()"
+          />
+        </td>
+      </tr>
+
+      <!-- Subtotal Row for Each Pizza Size -->
+      <tr>
+        <td><strong>Total</strong></td>
+        <td *ngFor="let size of pizzaSizes">
+          <ng-container *ngIf="getDiscountedSubtotal(size.name) < calculateSubtotal(size.name)">
+            <span class="strikethrough">{{ calculateSubtotal(size.name) | currency }}</span>
+          </ng-container>
+          <ng-container *ngIf="getDiscountedSubtotal(size.name) >= calculateSubtotal(size.name)">
+            {{ calculateSubtotal(size.name) | currency }}
+          </ng-container>
+        </td>
+      </tr>
+
+      <!-- Offer Row -->
+      <tr>
+        <td><strong>Offer</strong></td>
+        <td *ngFor="let size of pizzaSizes">
+          {{ offerMessageMap[size.name] || '' }}
+        </td>
+      </tr>
+
+      <!-- Payable Total Row for Each Size -->
+      <tr class="payable-row">
+        <td><strong>Payable Total</strong></td>
+        <td *ngFor="let size of pizzaSizes">
+          <ng-container *ngIf="getDiscountedSubtotal(size.name) < calculateSubtotal(size.name)">
+            <span> {{ getDiscountedSubtotal(size.name) | currency }}</span>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

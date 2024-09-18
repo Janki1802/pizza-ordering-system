@@ -6,3 +6,9 @@ export interface Topping {
   selectedLarge?: boolean;
   selectedExtraLarge?: boolean;
 }
+
+export interface PizzaSize {
+  name: string;
+  price: number;
+  quantity: number;
+}

@@ -31,3 +31,9 @@
     background-color: #d1e7dd; /* Light green background color for the total row */
     font-weight: bold;
   }
+
+  .strikethrough {
+    text-decoration: line-through;
+    color: red; /* Optional: color for the strikethrough text */
+  }
+  
